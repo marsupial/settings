@@ -1,0 +1,38 @@
+!!! IMPORTANT !!!
+The decision was made to MOVE the cmake dict from the top-level dict to
+the settings dict. I have written a small utility that checks for this
+and then automatically migrates the cmake dict, but you can also do this
+manually. Having things in the settings dict is generally The Right Way(tm)
+
+- Add "Edit Cache" command. This will simply open the CMakeCache.txt file.
+  Try it out!
+
+- Add "New Project" command. This will create a template project for you.
+  Try it out!
+
+- Made variable names in the CMakeCache.txt syntax (locally) indexable.
+  What this means in practice is that you can "goto anything", type an
+  "@" character and all of the variables will show up if you're looking
+  at a cache file.
+
+- Remove deprecated command "CMake Clear Cache And Configure".
+
+- Allow this package to be a zip file. What this means is that you'll
+  no longer find CMakeBuilder in the Packages directory, but in the
+  Installed Packages directory. If you still want to hack on CMakeBuilder,
+  consider cloning this package via GitHub.
+
+- Made the decision to put the "cmake" dict in the "settings" dict of the
+  project file. This allows the plugin to react to changes in a more
+  dynamic way. I've written a small migrator command to automate the
+  arduous process of moving the dict yourself. This command will go away
+  in version 1.0.0.
+
+- Set "configure_on_save" to "true" by default.
+
+- Various improvements to handling settings.
+
+- "configure_on_save" also reacts to changes to the cmake dict now.
+
+- Set "write_build_targets_after_successful_configure" to "true" by
+  default. It's mature enough.

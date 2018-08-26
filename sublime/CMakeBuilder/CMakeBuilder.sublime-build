@@ -1,0 +1,8 @@
+{
+    "target": "cmake_build",
+    "selector": "source.cmake | source.c | source.c++",
+    "variants":
+    {
+        "select_target": true
+    }
+}
