@@ -1,0 +1,12 @@
+{
+  "clang_binary" : "/Users/jermainedupris/repos/build/llvm7/bin/clang++",
+  "common_flags" : [
+    // some example includes
+    "-isysroot/Users/jermainedupris/Applications/Xcode7.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk",
+    "-I$project_base_path/src",
+    // this is needed to include the correct headers for clang
+    "-I/Users/jermainedupris/local/llvm4/include",
+    "-I/Users/jermainedupris/local/llvm4/include/c++/v1",
+    "-I/Users/jermainedupris/Downloads/buildbot-osx/include",
+  ],
+}

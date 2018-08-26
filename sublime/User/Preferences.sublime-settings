@@ -1,0 +1,9 @@
+{
+	"clang_binary": "/Users/jermainedupris/local/cling/bin/clang++",
+	"color_scheme": "Packages/OSL-Sublime/OSL.sublime-color-scheme",
+	"ignored_packages":
+	[
+		"Vintage"
+	],
+	"use_libclang": true
+}

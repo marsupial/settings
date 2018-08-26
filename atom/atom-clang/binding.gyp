@@ -63,6 +63,7 @@
       "include_dirs": [
         "<!(node -e \"require('nan')\")",
         "<!@(<(llvm_config) --includedir)",
+        "/Users/jermainedupris/Applications/Xcode7.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/usr/include",
       ],
       "link_settings": {
         "libraries": [
