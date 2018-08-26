@@ -1,0 +1,24 @@
+{
+  "name": "autocomplete-clang",
+  "main": "./lib/autocomplete-clang",
+  "version": "0.11.5",
+  "description": "autocomplete for C/C++/ObjC using clang",
+  "activationCommands": [],
+  "repository": "https://github.com/yasuyuky/autocomplete-clang",
+  "license": "MIT",
+  "engines": {
+    "atom": "^1.0.0"
+  },
+  "dependencies": {
+    "atom-space-pen-views": "^2.2.0",
+    "clang-flags": "0.2.2",
+    "tmp": "0.0.33"
+  },
+  "providedServices": {
+    "autocomplete.provider": {
+      "versions": {
+        "2.0.0": "provide"
+      }
+    }
+  }
+}
