@@ -1,9 +1,48 @@
 {
-	"scope": "source.osl",
+	"scope": "meta.function.osl",
 
 	"completions":
 	[
+		{ "trigger": "trace()\tpos, dir, ...", "contents": "trace(${1:pos}, ${2:dir}, ${3:params...})"},
+
 		{ "trigger": "exit()", "contents": "exit()"},
-		{ "trigger": "arraylength()\ttype A[]", "contents": "arraylength(${1:A[]})" }
+		{ "trigger": "arraylength()\ttype A[]", "contents": "arraylength(${1:A[]})" },
+
+		{ "trigger": "luminance()\tcolor rgb", "contents": "luminance(${1:rgb})" },
+		{ "trigger": "blackbody()\tfloat tempK", "contents": "blackbody(${1:temperatureK})" },
+		{ "trigger": "wavelength_color()\twavelength_nm", "contents": "wavelength_color(${1:wavelength_nm})" },
+
+		{ "trigger": "transformc()\tfrom, to, Cfrom", "contents": "transformc(${1:fromspace}, ${2:tospace}, ${3:Cfrom})" },
+		{ "trigger": "transformc()\ttospace, Cfrom", "contents": "transformc(${1:tospace}, ${2:Cfrom})" },
+
+		{ "trigger": "getmatrix()\tfrom, to, M", "contents": "getmatrix(${1:fromspace}, ${2:tospace}, ${3:M})" },
+		{ "trigger": "determinant()\tmatrix M", "contents": "determinant(${1:M})" },
+		{ "trigger": "transpose()\tmatrix M", "contents": "transpose(${1:M})" },
+
+		{ "trigger": "getattribute()\tname, destination", "contents": "getattribute(${1:name}, ${2:destination})"},
+		{ "trigger": "getattribute()\tname, index, destination", "contents": "getattribute(${1:name}, ${2:arrayindex}, ${3:destination})"},
+		{ "trigger": "getattribute()\tobject, name, destination", "contents": "getattribute(${1:object}, ${2:name}, ${3:destination})"},
+		{ "trigger": "getattribute()\tobject, name, index, destination", "contents": "getattribute(${1:object}, ${2:name}, ${3:arrayindex}, ${4:destination})"},
+
+		{ "trigger": "setmessage()\tname, value", "contents": "setmessage(${1:name}, ${2:value})"},
+
+		{ "trigger": "getmessage()\tname, destination", "contents": "getmessage(${1:name}, ${2:destination})"},
+		{ "trigger": "getattribute()\tsource, name, destination", "contents": "getattribute(${1:source}, ${2:name}, ${3:destination})"},
+		{ "trigger": "surfacearea()", "contents": "surfacearea($1)"},
+		{ "trigger": "raytype()\tstring name", "contents": "raytype(${1:name})"},
+		{ "trigger": "isconnected()\ttype parameter", "contents": "isconnected(${1:parameter})"},
+
+		{ "trigger": "displace()\tfloat amp", "contents": "displace(${1:amp})"},
+		{ "trigger": "displace()\tspace, amp", "contents": "displace(${1:space}, ${2:amp})"},
+		{ "trigger": "displace()\tvector offset", "contents": "displace(${1:offset})"},
+
+		{ "trigger": "bump()\tfloat amp", "contents": "bump(${1:amp})"},
+		{ "trigger": "bump()\tspace, amp", "contents": "bump(${1:space}, ${2:amp})"},
+		{ "trigger": "bump()\tvector offset", "contents": "bump(${1:offset})"},
+
+		{ "trigger": "dict_find()\tdictionary, query", "contents": "dict_find(${1:dictionary}, ${2:query})"},
+		{ "trigger": "dict_find()\tnodeID, query", "contents": "dict_find(${1:nodeID}, ${2:query})"},
+		{ "trigger": "dict_next()\tint nodeID", "contents": "dict_next(${1:nodeID})"},
+		{ "trigger": "dict_value()\tnodeID, attrib, value", "contents": "dict_value(${1:nodeID}, ${2:attribname}, ${3:value})"},
 	]
 }

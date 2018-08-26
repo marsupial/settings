@@ -1,0 +1,20 @@
+{
+	"scope": "meta.function.parameters.osl",
+
+	"completions":
+	[
+		/*metadata*/
+		{ "trigger": "help", "contents": "[[ string help=\"${1}\" ]]" },
+		{ "trigger": "label", "contents": "[[ string label=\"${1}\" ]]" },
+		{ "trigger": "page", "contents": "[[ string page=\"${1}\" ]]" },
+		{ "trigger": "URL", "contents": "[[ string URL=\"${1}\" ]]" },
+		{ "trigger": "widget", "contents": "[[ string widget=\"${1}\" ]]" },
+		{ "trigger": "units", "contents": "[[ string units=\"${1}\" ]]" },
+
+		{ "trigger": "fmin", "contents": "[[ float min=${1} ]]" },
+		{ "trigger": "fmax", "contents": "[[ float max=${1} ]]" },
+		{ "trigger": "imin", "contents": "[[ int min=${1} ]]" },
+		{ "trigger": "imax", "contents": "[[ int max=${1} ]]" },
+		{ "trigger": "lockgeom", "contents": "[[ int lockgeom=1 ]]" },
+	]
+}

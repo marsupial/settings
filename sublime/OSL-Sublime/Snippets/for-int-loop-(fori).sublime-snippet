@@ -5,5 +5,5 @@
 	${0:/* code */}
 }]]></content>
 	<tabTrigger>for</tabTrigger>
-	<scope>source.osl</scope>
+	<scope>meta.function</scope>
 </snippet>

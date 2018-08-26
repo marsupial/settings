@@ -101,14 +101,14 @@ shader ${1:wireframe}(
     Wire = wireframe("triangles", Line_Width, Raster);
 }"""
 
-SYNTAX_DEF = 'Packages/Open Shading Language/osl.tmLanguage'
-
+SYNTAX_DEF = 'Packages/OSL-Sublime/osl.tmLanguage'
+PACKAGE_ROOT = path.root_at_packages('')
 
 class NewShaderCommand(sublime_plugin.WindowCommand):
     def run(self):
         v = self.window.new_file()
         v.run_command('insert_snippet', {'contents': shad})
-        v.settings().set('default_dir', path.root_at_packages('User'))
+        v.settings().set('default_dir', PACKAGE_ROOT)
         v.set_syntax_file(SYNTAX_DEF)
 
 
@@ -116,40 +116,40 @@ class NewNoiseShaderCommand(sublime_plugin.WindowCommand):
     def run(self):
         v = self.window.new_file()
         v.run_command('insert_snippet', {'contents': noise})
-        v.settings().set('default_dir', path.root_at_packages('User'))
+        v.settings().set('default_dir', PACKAGE_ROOT)
         v.set_syntax_file(SYNTAX_DEF)
 
 class NewRampShaderCommand(sublime_plugin.WindowCommand):
     def run(self):
         v = self.window.new_file()
         v.run_command('insert_snippet', {'contents': ramp})
-        v.settings().set('default_dir', path.root_at_packages('User'))
+        v.settings().set('default_dir', PACKAGE_ROOT)
         v.set_syntax_file(SYNTAX_DEF)
 
 class NewTempShaderCommand(sublime_plugin.WindowCommand):
     def run(self):
         v = self.window.new_file()
         v.run_command('insert_snippet', {'contents': temp})
-        v.settings().set('default_dir', path.root_at_packages('User'))
+        v.settings().set('default_dir', PACKAGE_ROOT)
         v.set_syntax_file(SYNTAX_DEF)
 
 class NewToonShaderCommand(sublime_plugin.WindowCommand):
     def run(self):
         v = self.window.new_file()
         v.run_command('insert_snippet', {'contents': toon})
-        v.settings().set('default_dir', path.root_at_packages('User'))
+        v.settings().set('default_dir', PACKAGE_ROOT)
         v.set_syntax_file(SYNTAX_DEF)
 
 class NewWaveShaderCommand(sublime_plugin.WindowCommand):
     def run(self):
         v = self.window.new_file()
         v.run_command('insert_snippet', {'contents': wave})
-        v.settings().set('default_dir', path.root_at_packages('User'))
+        v.settings().set('default_dir', PACKAGE_ROOT)
         v.set_syntax_file(SYNTAX_DEF)
 
 class NewWireShaderCommand(sublime_plugin.WindowCommand):
     def run(self):
         v = self.window.new_file()
         v.run_command('insert_snippet', {'contents': wire})
-        v.settings().set('default_dir', path.root_at_packages('User'))
+        v.settings().set('default_dir', PACKAGE_ROOT)
         v.set_syntax_file(SYNTAX_DEF)

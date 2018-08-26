@@ -1,9 +1,12 @@
 <snippet>
 	<description>main</description>
-	<content><![CDATA[shader ${TM_FILENAME/\..+$//} ()
+	<content><![CDATA[shader ${TM_FILENAME/\..+$//}
+[[ string help="${TM_FILENAME/\..+$//}" ]]
+(${2:params})
 {
-	${0:/* code */}
-}]]></content>
+	${3:/* code */}
+}
+]]></content>
 	<tabTrigger>shader</tabTrigger>
 	<scope>source.osl - entity.name.function</scope>
 </snippet>

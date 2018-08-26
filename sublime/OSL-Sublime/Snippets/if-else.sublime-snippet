@@ -1,0 +1,13 @@
+<snippet>
+	<description>If Else Condition</description>
+	<content><![CDATA[if (${1:/* condition */})
+{
+    ${3:/* code */}
+} else (${2:/* condition */})
+{
+    ${4:/* code */}
+}
+]]></content>
+	<tabTrigger>if</tabTrigger>
+	<scope>meta.function</scope>
+</snippet>

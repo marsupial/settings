@@ -1,0 +1,33 @@
+{
+	"scope": "meta.function.parameters.osl",
+
+	"completions":
+	[
+		{ "trigger": "color()\tfloat f", "contents": "color ${1:name} = color(${2:f})" },
+		{ "trigger": "color()\tfloat r, float g, float b", "contents": "color ${1:name} = color(${2:r}, ${3:g}, ${4:b})" },
+		{ "trigger": "color()\tcolorspace, float f", "contents": "color ${1:name} = color(${2:colorspace}, ${3:f})" },
+		{ "trigger": "color()\tcolorspace, r, g, b", "contents": "color ${1:name} = color(${2:colorspace}, ${3:r}, ${4:g}, ${5:b})" },
+
+		{ "trigger": "point()\tfloat f", "contents": "point ${1:name} = point(${2:f})" },
+		{ "trigger": "point()\tfloat x, float y, float z", "contents": "point ${1:name} = point(${2:x}, ${3:y}, ${4:z})" },
+		{ "trigger": "vector()\tfloat f", "contents": "vector ${1:name} = vector(${2:f})" },
+		{ "trigger": "vector()\tfloat x, float y, float z", "contents": "vector ${1:name} = vector(${2:x}, ${3:y}, ${4:z})" },
+		{ "trigger": "normal()\tfloat f", "contents": "normal ${1:name} = normal(${2:f})" },
+		{ "trigger": "normal()\tfloat x, float y, float z", "contents": "normal ${1:name} = normal(${2:x}, ${3:y}, ${4:z})" },
+
+		{ "trigger": "matrix()\tfloat f", "contents": "matrix ${1:name} = matrix(${2:f})" },
+		{ "trigger": "matrix()\tm00..m33", "contents": "matrix ${1:name} = matrix(${2:m00} ,${3:m01}, ${4:m02}, ${5:m03}, ${6:m10} ,${7:m11}, ${8:m12}, ${9:m13}, ${10:m20} , ${11:m21}, ${12:m22}, ${13:m23}, ${14:m30} ,${15:m31}, ${16:m32}, ${17:m33})" },
+		{ "trigger": "matrix()\tm00..m33", "contents": "matrix ${1:name} = matrix(${2:m00} ,${3:m01}, ${4:m02}, ${5:m03}, ${6:m10} ,${7:m11}, ${8:m12}, ${9:m13}, ${10:m20} , ${11:m21}, ${12:m22}, ${13:m23}, ${14:m30} ,${15:m31}, ${16:m32}, ${17:m33})" },
+		{ "trigger": "matrix()\tfrom, m00..m33", "contents": "matrix ${1:name} = matrix(${2:fromspace}, ${3:m00} ,${4:m01}, ${5:m02}, ${6:m03}, ${7:m10} ,${8:m11}, ${9:m12}, ${10:m13}, ${11:m20} , ${12:m21}, ${13:m22}, ${14:m23}, ${15:m30} ,${16:m31}, ${17:m32}, ${18:m33})" },
+		{ "trigger": "matrix()\tfrom, f", "contents": "matrix ${1:name} = matrix(${2:from}, ${3:f})" },
+		{ "trigger": "matrix()\tfrom, to", "contents": "matrix ${1:name} = matrix(${2:from}, ${3:to})" },
+
+		{ "trigger": "output", "contents" : "output " },
+		{ "trigger": "closure", "contents" : "closure color ${1:name} = " },
+
+		{ "trigger": "bool", "contents": "int ${1:name} = " },
+		{ "trigger": "int", "contents": "int ${1:name} = " },
+		{ "trigger": "float", "contents": "float ${1:name} = " },
+		{ "trigger": "string", "contents": "string ${1:name} = \"${2}\"" },
+	]
+}

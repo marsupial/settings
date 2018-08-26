@@ -1,0 +1,61 @@
+{
+	"scope": "meta.function.osl",
+
+	"completions":
+	[
+		/*keywords*/
+		{ "trigger": "struct", "contents": "struct " },
+		{ "trigger": "continue", "contents": "continue" },
+		{ "trigger": "emit", "contents" : "emit" },
+		{ "trigger": "illuminance", "contents" : "illuminance" },
+		{ "trigger": "illuminate", "contents" : "illuminate" },
+
+		{ "trigger": "closure", "contents" : "closure color " },
+
+		/*data types*/
+		{ "trigger": "bool", "contents": "int " },
+		{ "trigger": "int", "contents": "int " },
+		{ "trigger": "float", "contents": "float " },
+		{ "trigger": "point", "contents": "point " },
+		{ "trigger": "vector", "contents": "vector " },
+		{ "trigger": "normal", "contents" : "normal " },
+		{ "trigger": "color", "contents" : "color " },
+		{ "trigger": "matrix", "contents" : "matrix " },
+		{ "trigger": "string", "contents": "string " },
+		{ "trigger": "void", "contents": "void " },
+
+		{ "trigger": "color()\tfloat f", "contents": "color(${1:f})" },
+		{ "trigger": "color()\tfloat r, float g, float b", "contents": "color(${1:r}, ${2:g}, ${3:b})" },
+		{ "trigger": "color()\tcolorspace, float f", "contents": "color(${1:colorspace}, ${2:f})" },
+		{ "trigger": "color()\tcolorspace, r, g, b", "contents": "color(${1:colorspace}, ${2:r}, ${3:g}, ${4:b})" },
+
+		{ "trigger": "point()\tfloat f", "contents": "point(${1:f})" },
+		{ "trigger": "point()\tfloat x, float y, float z", "contents": "point(${1:x}, ${2:y}, ${3:z})" },
+		{ "trigger": "vector()\tfloat f", "contents": "vector(${1:f})" },
+		{ "trigger": "vector()\tfloat x, float y, float z", "contents": "vector(${1:x}, ${2:y}, ${3:z})" },
+		{ "trigger": "normal()\tfloat f", "contents": "normal(${1:f})" },
+		{ "trigger": "normal()\tfloat x, float y, float z", "contents": "normal(${1:x}, ${2:y}, ${3:z})" },
+
+		{ "trigger": "matrix()", "contents": "matrix(${1:m00} ,${2:m01}, ${3:m02}, ${4:m03}, $5:m10} ,${6:m11}, ${7:m12}, ${8:m13}, ${9:m20} , ${10:m21}, ${11:m22}, ${12:m23}, ${13:m30} ,${14:m31}, ${15:m32}, ${16:m33})" },
+		{ "trigger": "matrix()\tfloat f", "contents": "matrix(${1:f})" },
+		{ "trigger": "matrix()\tfrom, m00..m33", "contents": "matrix(${1:fromspace}, ${2:m00} ,${3:m01}, ${4:m02}, ${5:m03}, $6:m10} ,${7:m11}, ${8:m12}, ${9:m13}, ${10:m20} , ${11:m21}, ${12:m22}, ${13:m23}, ${14:m30} ,${15:m31}, ${16:m32}, ${17:m33})" },
+		{ "trigger": "matrix()\tfrom, f", "contents": "matrix(${1:from}, ${2:f})" },
+		{ "trigger": "matrix()\tfrom, to", "contents": "matrix(${1:from}, ${2:to})" },
+
+		/*shader types*/
+		{ "trigger": "surface", "contents": "surface " },
+		{ "trigger": "displacement", "contents": "displacement " },
+		{ "trigger": "light", "contents": "light " },
+		{ "trigger": "volume", "contents": "volume " },
+		{ "trigger": "shader", "contents": "shader " },
+
+		/*geometric spaces*/
+		{ "trigger": "common", "contents": "common" },
+		{ "trigger": "object", "contents": "object" },
+		{ "trigger": "world", "contents": "world" },
+		{ "trigger": "camera", "contents": "camera" },
+		{ "trigger": "screen", "contents": "screen" },
+		{ "trigger": "raster", "contents": "raster" },
+		{ "trigger": "NDC", "contents": "NDC" }
+	]
+}
