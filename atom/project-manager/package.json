@@ -1,0 +1,93 @@
+{
+  "name": "project-manager",
+  "main": "./lib/project-manager",
+  "version": "3.3.6",
+  "description": "Project Manager for easy access and switching between projects in Atom.",
+  "repository": "https://github.com/danielbrodin/atom-project-manager",
+  "license": "MIT",
+  "keywords": [
+    "project",
+    "manager",
+    "settings",
+    "workflow",
+    "productivity"
+  ],
+  "engines": {
+    "atom": ">1.4.0"
+  },
+  "scripts": {
+    "test": "apm test && ./node_modules/.bin/eslint lib/**"
+  },
+  "dependencies": {
+    "atom-project-util": "^4.2.0",
+    "atom-space-pen-views": "^2.0.3",
+    "change-case": "^3.0.0",
+    "etch": "^0.8.0",
+    "findit": "^2.0.0",
+    "mobx": "^2.6.0",
+    "season": "^5.4.1",
+    "tildify": "^1.2.0",
+    "underscore-plus": "^1.6.6",
+    "untildify": "^3.0.2"
+  },
+  "providedServices": {
+    "project-manager": {
+      "description": "Get access to all saved projects",
+      "versions": {
+        "3.1.0": "provideProjects"
+      }
+    }
+  },
+  "configSchema": {
+    "showPath": {
+      "type": "boolean",
+      "default": true
+    },
+    "environmentSpecificProjects": {
+      "type": "boolean",
+      "default": false
+    },
+    "prettifyTitle": {
+      "type": "boolean",
+      "default": true,
+      "description": "Will suggest a prettified project title on save."
+    },
+    "savePathsRelativeToHome": {
+      "type": "boolean",
+      "default": false,
+      "description": "Will save paths relative to home path if possible."
+    },
+    "sortBy": {
+      "type": "string",
+      "description": "Default sorting is the order in which the projects are",
+      "default": "default",
+      "enum": [
+        "default",
+        "title",
+        "group",
+        "last modified"
+      ]
+    },
+    "includeGitRepositories": {
+      "type": "boolean",
+      "default": false,
+      "description": "Will search for directories in your `Project Home` that include `.git` and list them."
+    },
+    "ignoreDirectories": {
+      "type": "string",
+      "default": "node_modules, vendor",
+      "description": "Comma separated list of directories to skip when looking for git repositories."
+    },
+    "alwaysOpenInSameWindow": {
+      "type": "boolean",
+      "default": false,
+      "description": "Will reverse `shift+enter` in the list view to open in a new window."
+    }
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.0.0",
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb-base": "^9.0.0",
+    "eslint-plugin-import": "^2.3.0"
+  }
+}
