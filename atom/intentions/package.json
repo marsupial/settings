@@ -1,0 +1,37 @@
+{
+  "name": "intentions",
+  "main": "./lib/index.js",
+  "version": "1.1.5",
+  "description": "Base package for showing intentions in Atom",
+  "keywords": [],
+  "repository": "https://github.com/steelbrain/intentions",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+    "disposable-event": "^1.0.1",
+    "sb-event-kit": "^3.0.0",
+    "vanilla-jsx": "^3.0.2"
+  },
+  "devDependencies": {
+    "eslint-config-steelbrain": "^2.0.0",
+    "flow-bin": "^0.46.0",
+    "jasmine-fix": "^1.0.1"
+  },
+  "consumedServices": {
+    "intentions:list": {
+      "versions": {
+        "^1.0.0": "consumeListIntentions"
+      }
+    },
+    "intentions:highlight": {
+      "versions": {
+        "^1.0.0": "consumeHighlightIntentions"
+      }
+    }
+  },
+  "scripts": {
+    "test": "(apm test) && (flow check) && (eslint . )"
+  }
+}
