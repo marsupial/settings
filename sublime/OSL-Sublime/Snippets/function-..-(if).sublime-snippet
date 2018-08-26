@@ -1,0 +1,8 @@
+<snippet>
+	<description>Function</description>
+	<content><![CDATA[${1:void} ${2:name} (${3:/* paramters */}){
+	${4:/* code */}  
+}]]></content>
+	<tabTrigger>function</tabTrigger>
+	<scope>source.osl</scope>
+</snippet>

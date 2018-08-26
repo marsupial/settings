@@ -1,0 +1,9 @@
+<snippet>
+	<description>main</description>
+	<content><![CDATA[shader ${TM_FILENAME/\..+$//} ()
+{
+	${0:/* code */}
+}]]></content>
+	<tabTrigger>shader</tabTrigger>
+	<scope>source.osl - entity.name.function</scope>
+</snippet>
