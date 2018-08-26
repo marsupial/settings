@@ -27,7 +27,7 @@
               {
                   "command": "edit_settings",
                   "args": {
-                      "base_file": "${packages}/EasyClangComplete/Default ($platform).sublime-keymap"
+                      "base_file": "${packages}/EasyClangComplete/Default.sublime-keymap"
                   },
                   "caption": "Key Bindings"
               },
