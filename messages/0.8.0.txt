@@ -1,0 +1,43 @@
+- Fix bug where if you didn't have the "command_line_overrides" key in the
+  cmake dictionary you'd get an exception.
+
+- Add settings file (go to Preferences -> Package Settings -> CMakeBuilder)
+
+- The following settings are available as options in the settings file:
+
+  - write_build_targets_after_successful_configure (boolean)
+  - silence_developer_warnings                     (boolean)
+  - always_clear_cache_before_configure            (boolean)
+  - configure_on_save                              (boolean)
+  - ctest_command_line_args                        (string)
+
+  Refer to the package settings for more details.
+
+- With the settings present, some commands are now obsolete. They are:
+  
+  - Configure (Silence Dev Warnings)
+    You can set silence_developer_warnings to true in your settings
+    file for the same effect.
+
+  - Configure & Update Build System Targets
+    You can set write_build_targets_after_successful_configure to true in
+    your settings file for the same effect.
+
+  - Run CTest (Verbose), Run CTest (Extra Verbose)
+    You can set ctest_command_line_args to "--output-on-failure -VV".
+
+  These three commands will dissapear in 0.9 (current version is 0.8).
+
+- Separate generators into platform-specific python packages.
+  In the directory Packages/CMakeBuilder/Generators, we now have a Python
+  file for each generator. That is, we define a one-to-one correspondence
+  between pyfiles in those directories and platform-specific generators.
+
+- Add "Visual Studio" and "NMake Makefiles" generators for Windows.
+  Yes, there's Windows support now. Hello, windows users! I haven't
+  updated the package control channel yet, so they'll have to wait a bit
+  longer. But the functionality is present.
+
+- Rewrite README.md for new users.
+
+- Add CONTRIBUTING.md file.
