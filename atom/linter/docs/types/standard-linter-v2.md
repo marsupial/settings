@@ -15,16 +15,11 @@ type Linter = {
 
   // From providers
   name: string,
-  scope: "file" | "project",
+  scope: 'file' | 'project',
   lintsOnChange: boolean,
   grammarScopes: Array<string>,
-  lint(
-    textEditor: TextEditor
-  ):
-    | Array<Message>
-    | null
-    | Promise<Array<Message> | null>
-};
+  lint(textEditor: TextEditor): ?Array<Message | MessageLegacy> | Promise<?Array<Message | MessageLegacy>>,
+}
 ```
 
 ## FAQs
@@ -77,4 +72,4 @@ regardless of the scope of the current file.
 
 **A**: Return `null` from your provider to make it re-use last messages.
 
-[example usage]: ../examples/standard-linter-v2.md
+[Example Usage]: ../examples/standard-linter-v2.md

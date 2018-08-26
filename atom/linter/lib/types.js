@@ -58,7 +58,6 @@ export type MessageLegacy = {
   }
 }
 
-export type LinterResult = Array<Message | MessageLegacy> | null
 export type Linter = {
   // Automatically added
   __$sb_linter_version: number,
@@ -72,7 +71,7 @@ export type Linter = {
   lintOnFly?: boolean, // <-- legacy
   lintsOnChange?: boolean,
   grammarScopes: Array<string>,
-  lint(textEditor: TextEditor): LinterResult | Promise<LinterResult>,
+  lint(textEditor: TextEditor): ?Array<Message | MessageLegacy> | Promise<?Array<Message | MessageLegacy>>,
 }
 
 export type Indie = {
