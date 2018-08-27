@@ -1,7 +1,6 @@
 import sublime_plugin
-
+from sublime import packages_path
 from os import path
-from sublime_lib import path
 
 shad = """#include "stdosl.h"
 
@@ -101,8 +100,8 @@ shader ${1:wireframe}(
     Wire = wireframe("triangles", Line_Width, Raster);
 }"""
 
-SYNTAX_DEF = 'Packages/OSL-Sublime/osl.tmLanguage'
-PACKAGE_ROOT = path.root_at_packages('')
+SYNTAX_DEF = 'Packages/OSL-Sublime/OSL.sublime-syntax'
+PACKAGE_ROOT = packages_path()
 
 class NewShaderCommand(sublime_plugin.WindowCommand):
     def run(self):
