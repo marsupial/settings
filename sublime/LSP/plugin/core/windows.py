@@ -6,6 +6,8 @@ from .protocol import Notification
 from .sessions import Session
 from .url import filename_to_uri
 from .workspace import get_project_path
+from . import flags
+
 try:
     from typing_extensions import Protocol
     from typing import Optional, List, Callable, Dict, Any
@@ -206,6 +208,9 @@ class WindowDocumentHandler(object):
 
     def _notify_did_open(self, view: ViewLike, session: Session) -> None:
         file_name = view.file_name()
+        #from imp import reload
+        #reload(flags)
+        outFlags = flags.getCompileFlags(view, session, file_name)
         if file_name:
             ds = self.get_document_state(file_name)
             params = {
@@ -214,6 +219,9 @@ class WindowDocumentHandler(object):
                     "languageId": self._view_language(view, session.config.name),
                     "text": view.substr(self._sublime.Region(0, view.size())),
                     "version": ds.version
+                },
+                "metadata": {
+                    "extraFlags": outFlags
                 }
             }
             session.client.send_notification(Notification.didOpen(params))
