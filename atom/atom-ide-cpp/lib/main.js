@@ -65,13 +65,23 @@ class CppLanguageClient extends AutoLanguageClient {
     // Additional details of the '.clang_complete' file can be found at
     // https://github.com/Rip-Rip/clang_complete
     const candidatePath = path.join(this.projectPath, '.clang_complete')
+    var flags = [];
     if (fs.existsSync(candidatePath)) {
-      return this.parseClangCompleteFile(candidatePath)
+      flags = this.parseClangCompleteFile(candidatePath)
     }
+    function getPrefFlags(key) {
+      const pflags = atom.config.get(key)
+      if (!pflags)
+        return;
+      for (var flag of pflags)
+        flags.push(flag)
+    }
+    getPrefFlags(atom.workspace.getActiveTextEditor().languageMode.grammar.name.toLowerCase() == "c++" ?
+                 'atom-clang.defaultCXXFlags' : 'atom-clang.defaultCFlags')
 
     // TODO: Add support for additional file formats.
 
-    return null
+    return flags && flags.length ? flags : null
   }
 
   parseClangCompleteFile (filePath) {
