@@ -4,6 +4,7 @@
 fs = require 'fs'
 os = require 'os'
 path = require 'path'
+{File} = require 'atom'
 
 debug = require './debug'
 scope = require './scope'
@@ -24,13 +25,35 @@ getEditorPath = (editor) ->
   fs.closeSync fs.openSync filepath, 'w' if not fs.existsSync filepath
   return filepath
 
-# libclang args cannot have spaces in, from a user perspective that is annoying, correct it here
-flags_re = /\s+/
 
-formatFlags = (flags) ->
-  formattedFlags = []
+# clang needs a valid file path, so if this is an empty buffer, create a unique temporary file path for the buffer
+getClangFlags = (editor) ->
+  parent = editor.getDirectoryPath()
+  while parent
+    clang_format = path.join(parent, '.clang_complete')
+    nextParent = path.dirname(parent)
+    if fs.existsSync(clang_format)
+      # const rawData = fs.readFileSync(filePath)
+      return (new File(clang_format, false)).read()
+    if nextParent == parent
+      break
+    parent = nextParent
+
+
+# libclang args cannot have spaces in, from a user perspective that is annoying, correct it here
+formatFlags = (lang, clang_format, flags) ->
+  flags_re = /\s+/
+  formattedFlags = [
+    '-x' + lang,
+    '-Wno-pragma-once-outside-header',
+    '-resource-dir=/Users/jermainedupris/repos/build/llvm7/bin/../lib/clang/7.0.0'
+  ]
+  clang_format.forEach (flag) ->
+    if flag.length
+      formattedFlags.push.apply(formattedFlags, flag.split(flags_re))
   flags.forEach (flag) ->
-    formattedFlags.push.apply(formattedFlags, flag.split(flags_re))
+    if flag.length
+      formattedFlags.push.apply(formattedFlags, flag.split(flags_re))
   formattedFlags
 
 # go through all the open buffers that are modified and collect their contents to give to libclang
@@ -59,6 +82,11 @@ load = (editor) ->
 
   debug.log 'load', editor.clang, getEditorPath editor
   console.assert not editor.clang?, editor
+
+  clang_format = []
+  getClangFlags(editor).then (lines) ->
+    clang_format = lines.split('\n')
+    debug.log "clang_format", clang_format
 
   # perform a full translation unit parse
   parse = ->
@@ -133,15 +161,11 @@ load = (editor) ->
   # after this has a lot of the bugs and features worked out, this optimization can be revisited...
   if scope.isCScope editor.getRootScopeDescriptor()
     editor.clang.subscriptions.add atom.config.observe 'atom-clang.defaultCFlags', (flags) ->
-      flags.push '-xc'
-      flags.push '-Wno-pragma-once-outside-header'
-      editor.clang.translationUnit.setArgs formatFlags flags
+      editor.clang.translationUnit.setArgs formatFlags 'c', clang_format, flags
       editor.clang.coalescer.parse().catch util.showError()
   else if scope.isCppScope editor.getRootScopeDescriptor()
     editor.clang.subscriptions.add atom.config.observe 'atom-clang.defaultCXXFlags', (flags) ->
-      flags.push '-xc++'
-      flags.push '-Wno-pragma-once-outside-header'
-      editor.clang.translationUnit.setArgs formatFlags flags
+      editor.clang.translationUnit.setArgs formatFlags 'c++', clang_format, flags
       editor.clang.coalescer.parse().catch util.showError()
   else
     editorScope = scope.getScope editor.getRootScopeDescriptor()
