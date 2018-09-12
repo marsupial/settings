@@ -228,6 +228,17 @@ class SettingsStorage:
                     break
             if val is not None:
                 # set this value to this object too
+                base = getattr(self, setting_name, None)
+                if base and type(base) == type(val):
+                    if isinstance(val, list):
+                        #log.debug("Extending %r with %r" % (base, val))
+                        val.extend(base)
+                    elif isinstance(val, dict):
+                        #log.debug("Merging %r into %r" % (val, base))
+                        for k, v in val:
+                          base[k] = v
+                        val = base
+
                 setattr(self, setting_name, val)
                 # tell the user what we have done
                 log.debug("%-26s <-- '%s'", setting_name, val)
