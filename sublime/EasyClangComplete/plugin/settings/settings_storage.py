@@ -280,12 +280,15 @@ class SettingsStorage:
         for idx, flag in enumerate(self.common_flags):
             self.common_flags[idx] = self.__replace_wildcard_if_needed(flag)
 
+        def addCurrent(key, path):
+            incl = getattr(self, key, None)
+            if not incl: return
+            if isinstance(incl, bool): incl = '-I'
+            log.debug("adding include path: " + incl + path)
+            self.common_flags.append(incl + path)
         file_current_folder = path.dirname(current_file_name)
-        if self.include_file_folder:
-            self.common_flags.append("-I" + file_current_folder)
-        file_parent_folder = path.dirname(file_current_folder)
-        if self.include_file_parent_folder:
-            self.common_flags.append("-I" + file_parent_folder)
+        addCurrent('include_file_folder', file_current_folder)
+        addCurrent('include_file_parent_folder', path.dirname(file_current_folder))
 
     def __replace_wildcard_if_needed(self, line):
         """Replace wildcards in a line if they are present there.
