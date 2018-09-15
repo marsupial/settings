@@ -1,0 +1,22 @@
+## git
+.github/ export-ignore
+gh-pages/ export-ignore
+*.git export-ignore
+*.gitignore export-ignore
+*.gitattributes export-ignore
+
+## mkdocs sources
+docs/ export-ignore
+mkdocs.yml export-ignore
+
+## release scripts
+makefile export-ignore
+release.py export-ignore
+release.sublime-commands export-ignore
+
+## unit testing
+tests/ export-ignore
+unittesting.json export-ignore
+
+## linter setup
+setup.cfg export-ignore
