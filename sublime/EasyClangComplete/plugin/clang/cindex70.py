@@ -222,7 +222,7 @@ class SourceLocation(Structure):
     def _get_instantiation(self):
         if self._data is None:
             f, l, c, o = c_object_p(), c_uint(), c_uint(), c_uint()
-            conf.lib.clang_getInstantiationLocation(self, byref(f), byref(l),
+            conf.lib.clang_getExpansionLocation(self, byref(f), byref(l),
                     byref(c), byref(o))
             if f:
                 f = File(f)
@@ -1069,6 +1069,8 @@ CursorKind.OMP_ARRAY_SECTION_EXPR = CursorKind(147)
 # Represents an @available(...) check.
 CursorKind.OBJC_AVAILABILITY_CHECK_EXPR = CursorKind(148)
 
+# Fixed point literal
+CursorKind.FIXED_POINT_LITERAL = CursorKind(149)
 
 # A statement whose specific kind is not exposed via this interface.
 #
@@ -1290,6 +1292,31 @@ CursorKind.OMP_TARGET_SIMD_DIRECTIVE = CursorKind(270)
 # OpenMP teams distribute directive.
 CursorKind.OMP_TEAMS_DISTRIBUTE_DIRECTIVE = CursorKind(271)
 
+# OpenMP teams distribute simd directive.
+CursorKind.OMP_TEAMS_DISTRIBUTE_SIMD_DIRECTIVE = CursorKind(272)
+
+# OpenMP teams distribute parallel for simd directive.
+CursorKind.OMP_TEAMS_DISTRIBUTE_PARALLEL_FOR_SIMD_DIRECTIVE = CursorKind(273)
+
+# OpenMP teams distribute parallel for directive.
+CursorKind.OMP_TEAMS_DISTRIBUTE_PARALLEL_FOR_DIRECTIVE = CursorKind(274)
+
+# OpenMP target teams directive.
+CursorKind.OMP_TEAMS_TARGET_DIRECTIVE = CursorKind(275)
+
+# OpenMP target teams distribute directive.
+CursorKind.OMP_TEAMS_TARGET_DISTRIBUTE_DIRECTIVE = CursorKind(276)
+
+# OpenMP target teams distribute parallel for directive.
+CursorKind.OMP_TEAMS_TARGET_DISTRIBUTE_PARALLEL_FOR_DIRECTIVE = CursorKind(277)
+
+# OpenMP target teams distribute parallel for simd directive.
+CursorKind.OMP_TEAMS_TARGET_DISTRIBUTE_PARALLEL_FOR_SIMD_DIRECTIVE = CursorKind(278)
+
+# OpenMP target teams distribute simd directive.
+CursorKind.OMP_TEAMS_TARGET_DISTRIBUTE_SIMD_DIRECTIVE = CursorKind(279)
+
+
 ###
 # Other Kinds
 
@@ -1366,6 +1393,10 @@ TemplateArgumentKind.TYPE = TemplateArgumentKind(1)
 TemplateArgumentKind.DECLARATION = TemplateArgumentKind(2)
 TemplateArgumentKind.NULLPTR = TemplateArgumentKind(3)
 TemplateArgumentKind.INTEGRAL = TemplateArgumentKind(4)
+TemplateArgumentKind.TEMPLATE = TemplateArgumentKind(5)
+TemplateArgumentKind.TEMPLATE_EXPANSION = TemplateArgumentKind(6)
+TemplateArgumentKind.EXPRESSION = TemplateArgumentKind(7)
+TemplateArgumentKind.PACK = TemplateArgumentKind(8)
 
 ### Exception Specification Kinds ###
 class ExceptionSpecificationKind(BaseEnumeration):
@@ -1984,6 +2015,13 @@ TypeKind.OBJCCLASS = TypeKind(28)
 TypeKind.OBJCSEL = TypeKind(29)
 TypeKind.FLOAT128 = TypeKind(30)
 TypeKind.HALF = TypeKind(31)
+TypeKind.FLOAT16 = TypeKind(32)
+TypeKind.SHORT_ACCUM = TypeKind(33)
+TypeKind.ACCUM = TypeKind(34)
+TypeKind.LONG_ACCUM = TypeKind(35)
+TypeKind.USHORT_ACCUM = TypeKind(36)
+TypeKind.U_ACCUM = TypeKind(37)
+TypeKind.ULONG_ACCUM = TypeKind(38)
 TypeKind.COMPLEX = TypeKind(100)
 TypeKind.POINTER = TypeKind(101)
 TypeKind.BLOCKPOINTER = TypeKind(102)
@@ -2478,6 +2516,10 @@ class CompletionString(ClangObject):
         return CompletionChunk(self.obj, key)
 
     @property
+    def parent(self):
+        return conf.lib.clang_getCompletionParent(self.obj, None)
+
+    @property
     def priority(self):
         return conf.lib.clang_getCompletionPriority(self.obj)
 
@@ -2545,6 +2587,14 @@ class CodeCompletionResults(ClangObject):
     @property
     def results(self):
         return self.ptr.contents
+
+    def fixits(self, completion_index):
+        return conf.lib.clang_getCompletionNumFixIts(self.ccr, completion_index)
+
+    def fixit(self, completion_index, fix_it_index):
+        sr = SourceRange()
+        return conf.lib.clang_getCompletionFixIt(self.ccr, completion_index,
+                                                 fix_it_index, byref(sr))
 
     @property
     def diagnostics(self):
@@ -2640,6 +2690,17 @@ class TranslationUnit(ClangObject):
     # into the set of code completions returned from this translation unit.
     PARSE_INCLUDE_BRIEF_COMMENTS_IN_CODE_COMPLETION = 128
 
+    # Do not stop processing when fatal errors are encountered.
+    PARSE_KEEP_GOING = 512
+
+    # Sets the preprocessor in a mode for parsing a single file only.
+    PARSE_SINGLE_FILE = 1024
+
+    # Used in combination with CXTranslationUnit_SkipFunctionBodies to
+    # constrain the skipping of function bodies to the preamble.
+    # The function bodies of the main file are not skipped.
+    PARSE_LIMIT_SKIP_FUNCTIONS_TO_PREAMBLE = 2048
+
     @classmethod
     def from_source(cls, filename, args=None, unsaved_files=None, options=0,
                     index=None):
@@ -2682,6 +2743,11 @@ class TranslationUnit(ClangObject):
         the input filename. If you pass in source code containing a C++ class
         declaration with the filename "test.c" parsing will fail.
         """
+        options += TranslationUnit.PARSE_KEEP_GOING
+        # options += TranslationUnit.PARSE_SINGLE_FILE
+        options += TranslationUnit.PARSE_SKIP_FUNCTION_BODIES
+        options += TranslationUnit.PARSE_LIMIT_SKIP_FUNCTIONS_TO_PREAMBLE
+
         if args is None:
             args = []
 
@@ -2913,9 +2979,20 @@ class TranslationUnit(ClangObject):
             raise TranslationUnitSaveError(result,
                 'Error saving TranslationUnit.')
 
+    def suspend(self):
+        """
+        Suspend a translation unit in order to free memory associated with it.
+        
+        A suspended translation unit uses significantly less memory but on the other
+        side does not support any other calls than clang_reparseTranslationUnit
+        to resume it or clang_disposeTranslationUnit to dispose it completely.
+        """
+        return conf.lib.clang_suspendTranslationUnit(self)
+
     def codeComplete(self, path, line, column, unsaved_files=None,
                      include_macros=False, include_code_patterns=False,
-                     include_brief_comments=False):
+                     include_brief_comments=False, skip_preamble=False,
+                     include_fixits=False):
         """
         Code complete in this translation unit.
 
@@ -2934,6 +3011,12 @@ class TranslationUnit(ClangObject):
 
         if include_brief_comments:
             options += 4
+
+        if skip_preamble:
+            options += 8
+
+        if include_fixits:
+            options += 16
 
         if unsaved_files is None:
             unsaved_files = []
@@ -2972,6 +3055,11 @@ class TranslationUnit(ClangObject):
 
         return TokenGroup.get_tokens(self, extent)
 
+class FileUniqueID(Structure):
+    _fields_ = [
+        ('data', c_ulonglong * 3),
+    ]
+
 class File(ClangObject):
     """
     The File class represents a particular source file that is part of a
@@ -2992,6 +3080,17 @@ class File(ClangObject):
     def time(self):
         """Return the last modification time of the file."""
         return conf.lib.clang_getFileTime(self)
+
+    @property
+    def uinqueID(self):
+        """Return the last modification time of the file."""
+        id = FileUniqueID()
+        return id if conf.lib.clang_getFileUniqueID(self, byref(id)) == 0 else None
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return conf.lib.clang_File_isEqual(self, other) != 0
+        return False
 
     def __str__(self):
         return self.name
@@ -3281,6 +3380,16 @@ functionList = [
    [Index, c_interop_string],
    c_object_p),
 
+  ("clang_CXIndex_setGlobalOptions",
+   [Index, c_uint]),
+
+  ("clang_CXIndex_getGlobalOptions",
+   [Index],
+   c_uint),
+
+  ("clang_CXIndex_setInvocationEmissionPathOption",
+   [Index, c_interop_string]),
+
   ("clang_CXXConstructor_isConvertingConstructor",
    [Cursor],
    bool),
@@ -3370,6 +3479,15 @@ functionList = [
    [Type, Type],
    bool),
 
+  ("clang_File_isEqual",
+   [File, File],
+   c_int),
+
+  ("clang_File_tryGetRealPathName",
+   [File],
+   _CXString,
+   _CXString.from_result),
+
   ("clang_formatDiagnostic",
    [Diagnostic, c_uint],
    _CXString,
@@ -3429,6 +3547,20 @@ functionList = [
    _CXString,
    _CXString.from_result),
 
+  ("clang_getCompletionParent",
+   [c_void_p, c_void_p],
+   _CXString,
+   _CXString.from_result),
+
+  ("clang_getCompletionNumFixIts",
+   [CodeCompletionResults, c_uint],
+   c_uint),
+
+  ("clang_getCompletionFixIt",
+   [CodeCompletionResults, c_uint, c_uint, POINTER(SourceRange)],
+   _CXString,
+   _CXString.from_result),
+
   ("clang_getCompletionPriority",
    [c_void_p],
    c_int),
@@ -3441,6 +3573,11 @@ functionList = [
   ("clang_getCursor",
    [TranslationUnit, SourceLocation],
    Cursor),
+
+  ("clang_getCursorCompletionString",
+   [Cursor],
+   _CXString,
+   _CXString.from_result),
 
   ("clang_getCursorDefinition",
    [Cursor],
@@ -3587,6 +3724,10 @@ functionList = [
    Type,
    Type.from_result),
 
+  ("clang_getExpansionLocation",
+   [SourceLocation, POINTER(c_object_p), POINTER(c_uint), POINTER(c_uint),
+    POINTER(c_uint)]),
+
   ("clang_getFile",
    [TranslationUnit, c_interop_string],
    c_object_p),
@@ -3599,6 +3740,10 @@ functionList = [
   ("clang_getFileTime",
    [File],
    c_uint),
+
+  ("clang_getFileUniqueID",
+   [File, POINTER(FileUniqueID)],
+   c_int),
 
   ("clang_getIBOutletCollectionType",
    [Cursor],
@@ -3829,6 +3974,13 @@ functionList = [
   ("clang_saveTranslationUnit",
    [TranslationUnit, c_interop_string, c_uint],
    c_int),
+
+  ("clang_sortCodeCompletionResults",
+   [CodeCompletionResults, c_uint]),
+
+  ("clang_suspendTranslationUnit",
+   [TranslationUnit],
+   c_uint),
 
   ("clang_tokenize",
    [TranslationUnit, SourceRange, POINTER(POINTER(Token)), POINTER(c_uint)]),
